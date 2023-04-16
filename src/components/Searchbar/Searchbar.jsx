@@ -1,39 +1,46 @@
-import { Component } from "react";
+import { Component } from 'react';
+import css from '../Searchbar/Searchbar.module.css';
 
+class Searchbar extends Component {
+  state = {
+    value: '',
+  };
 
-export default class Searchbar extends Component {
-	state = {
-		value: '',
-	}
+  handleChangeStarch = e => {
+    this.setState({ value: e.target.value });
+  };
 
-	handlChange = ({target:{ value }}) => {
-		this.setState({ value })
-	 }
+  getInputValue = e => {
+    e.preventDefault();
+    const { value } = this.state;
+    if (value !== this.props.currentValue) {
+      this.props.getCurrentFetchValue(value);
+      this.props.resetPage();
+    }
+    this.props.getCurrentFetchValue(value);
+  };
 
-	handelSubmit = (e) => {
-		e.preventDefault()
-		this.props.onSubmit(this.state.value)
-	}
+  render() {
+    return (
+      <>
+        <header className={css.searchbar}>
+          <form className={css.searchForm} onSubmit={this.getInputValue}>
+            <button type="submit" className={css.button}>
+              <span className={css.button__label}>Search</span>
+            </button>
 
-	render() {
-		return (
-			<header className="searchbar">
-				<form className="form" onSubmit={this.handelSubmit}>
-					<button type="submit" className="button">
-						<span className="button-label">Search</span>
-					</button>
-
-					<input
-						className="input"
-						type="text"
-						autoComplete="off"
-						autoFocus
-						placeholder="Search images and photos"
-						onChange={this.handlChange}
-						value={this.state.value}
-					/>
-				</form>
-			</header>
-		)
-	}
+            <input
+              className={css.input}
+              type="text"
+              placeholder="Search images and photos"
+              onChange={this.handleChangeStarch}
+              value={this.state.value}
+            />
+          </form>
+        </header>
+      </>
+    );
+  }
 }
+
+export default Searchbar;
