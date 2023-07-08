@@ -1,37 +1,37 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import css from './ImageGalleryItem.modules.css';
 
-class ImageGalleryItem extends Component {
-  state = {
-    currentImage: null,
-  };
+const ImageGalleryItem = ({showModal, images }) => {
+	const [currentImage, setCurrentImage] = useState(null);
 
-  showModalImg = image => {
-    this.setState({ currentImage: image });
-    this.props.showModal(this.state.currentImage);
-  };
+	const showModalImg = (image) => {
+		setCurrentImage(image);
+		showModal(currentImage);
+	};
 
-  showImage = e => {
-    e.preventDefault();
-    this.setState({ currentImage: e.target.src });
-    this.props.showModal(e.target.src);
-  };
+	const showImage = e => {
+		e.preventDefault();
+		setCurrentImage(e.target.src);
+		showModal(e.target.src);
+	};
 
-  render() {
-    if (this.props.images)
-      return this.props.images.map(img => {
-        return (
-          <li key={img.id} className={css.gallery__item}>
-              <img
-                src={img.webformatURL}
-                className={css.gallery__img}
-                alt={img.tags}
-                onClick={this.showImage}
-              />
-          </li>
-        );
-      });
-  }
+	return (
+		<>
+			{images && (
+				images.map(img => {
+					return (
+					   <li key={img.id} className={css.gallery__item}>
+					      <img
+					         src={img.webformatURL}
+					         className={css.gallery__img}
+					         alt={img.tags}
+					         onClick={showImage}
+					      />
+					   </li>
+					);
+				})
+			)}
+		</>
+	)
 }
-
 export default ImageGalleryItem;

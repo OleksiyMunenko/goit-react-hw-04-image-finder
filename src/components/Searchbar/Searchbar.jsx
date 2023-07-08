@@ -1,30 +1,28 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import css from '../Searchbar/Searchbar.module.css';
 
-class Searchbar extends Component {
-  state = {
-    value: '',
-  };
 
-  handleChangeStarch = e => {
-    this.setState({ value: e.target.value });
-  };
+const Searchbar = ({currentValue, getCurrentFetchValue, resetPage}) => {
+	const [value, setValue] = useState('');
 
-  getInputValue = e => {
-    e.preventDefault();
-    const { value } = this.state;
-    if (value !== this.props.currentValue) {
-      this.props.getCurrentFetchValue(value);
-      this.props.resetPage();
-    }
-    this.props.getCurrentFetchValue(value);
-  };
+	const handleChangeStarch = e => {
+		setValue(e.target.value);
+	};
 
-  render() {
+	const getInputValue = e => {
+		e.preventDefault();
+		if (value !== currentValue) {
+			getCurrentFetchValue(value);
+			resetPage();
+		}
+		getCurrentFetchValue(value);
+   };
+
+
     return (
       <>
         <header className={css.searchbar}>
-          <form className={css.searchForm} onSubmit={this.getInputValue}>
+          <form className={css.searchForm} onSubmit={getInputValue}>
             <button type="submit" className={css.button}>
               <span className={css.button__label}>Search</span>
             </button>
@@ -33,14 +31,21 @@ class Searchbar extends Component {
               className={css.input}
               type="text"
               placeholder="Search images and photos"
-              onChange={this.handleChangeStarch}
-              value={this.state.value}
+              onChange={handleChangeStarch}
+              value={value}
             />
           </form>
         </header>
       </>
     );
-  }
+
+
 }
+
+
+
+
+
+
 
 export default Searchbar;
